@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Jogo da Velha</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+	<style type="text/css">
+		img{
+			width: 200px;
+			height: 200px;
+		}
+		body{
+			background-image: url("velha fundos.jpg");
+			background-size: cover;	
+		}
+		.container{
+			width: 600px;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.col{
+			height: 200px;
+			width: 200px;
+			box-sizing: border-box;
+			border: 3px solid black;
+		}
+		#e1{
+			border-left: 0;
+			border-top: 0;
+		}
+		#e2{
+			border-top: 0;
+		}
+		#e3{
+			border-top: 0;
+			border-right: 0;
+		}
+		#e4{
+			border-left: 0;
+		}
+		#e6{
+			border-right: 0;
+		}
+		#e7{
+			border-left: 0;
+			border-bottom: 0;
+		}
+		#e8{
+			border-bottom: 0;
+		}
+		#e9{
+			border-bottom: 0;
+			border-right: 0;
+		}
+		p{
+			text-align: center;
+			color: black;
+			font-size: 30px;
+			background-color: whitesmoke;
+		}
+		#linkPortfolio{
+			background-color: whitesmoke;
+			text-align: center;
+		}
+		.bt{
+			border-radius: 30px;
+		}
+		a{
+			text-decoration: none;
+		}
+	</style>
+</head>	
+<body>
+	<div id="linkPortfolio"><button class="bt"><a href="file:///C:/Users/Nirlene/Downloads/MyResume/MyResume/index.html">PORTFOLIO</a></button></div>
+	<p id="vezJogador">Vez do jogador: Branco</p>	
+	<div class="container">
+		<div class="row">
+			<div class="col" id="e1">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa1">
+			</div>	
+			<div class="col" id="e2">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa2">
+			</div>	
+			<div class="col" id="e3">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa3">
+			</div>	
+		</div>
+		<div class="row">
+			<div class="col" id="e4">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa4">
+			</div>	
+			<div class="col">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa5">
+			</div>	
+			<div class="col" id="e6">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa6">
+			</div>	
+		</div>
+		<div class="row">
+			<div class="col" id="e7">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa7">
+			</div>	
+			<div class="col" id="e8">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa8">
+			</div>	
+			<div class="col" id="e9">
+				<img src="invisivel.png" onclick="jogar(this.id)" id = "casa9">
+			</div>	
+		</div>	
+	</div>
+	<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalToggleLabel">Fim de Jogo</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<span id="modalMessage"></span>
+					<button class="btn btn-primary" onclick="reiniciarJogo()">Reiniciar</button>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var modal = document.getElementById("exampleModalToggle");
+			var closeModalButton = document.querySelector("#exampleModalToggle .btn-close");
+
+			closeModalButton.addEventListener("click", function() {
+				modal.style.display = "none";
+				reiniciarJogo();
+			});
+		</script>
+	</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	var vez = 1;
+	var jogadas = 0;
+	var joga = true;
+	var c1, c2, c3, casa;
+	var ganhar = [
+		[1,2,3],
+		[4,5,6],
+		[7,8,9],
+		[1,4,7],
+		[2,5,8],
+		[3,6,9],	
+		[1,5,9],
+		[7,5,3]
+		];
+	
+	function jogar(id){
+		if(joga){
+			casa = document.getElementById(id);
+
+			if(casa.getAttribute("src")=="invisivel.png" && jogadas < 9){
+				if(vez==1){
+					vez++;
+					casa.setAttribute('src', 'cross.png');
+					document.getElementById("vezJogador").innerHTML = "Vez do jogador: Laranja";
+				}
+				else{
+					vez--;
+					casa.setAttribute('src', 'circle.png');
+					document.getElementById("vezJogador").innerHTML = "Vez do jogador: Branco";
+				}
+			}	
+			jogadas++;
+			ganhou();
+			if(jogadas == 9 && joga != false){
+				var modalMessage = document.getElementById("modalMessage");
+				modalMessage.textContent = "Deu velha!";
+
+				var modal = new bootstrap.Modal(
+					document.getElementById("exampleModalToggle")
+					);
+				setTimeout(function() {
+					modal.show();
+				}, 500);
+			}
+		}
+	}
+	function ganhou() {
+		for (var i = 0; i < ganhar.length; i++) {
+			c1 = document.getElementById("casa" + ganhar[i][0]);
+			c2 = document.getElementById("casa" + ganhar[i][1]);
+			c3 = document.getElementById("casa" + ganhar[i][2]);
+
+			if (c1.getAttribute("src") != "invisivel.png") {
+				if (
+					c1.getAttribute("src") == c2.getAttribute("src") &&
+					c2.getAttribute("src") == c3.getAttribute("src")
+					) {
+					var modalMessage = document.getElementById("modalMessage");
+				modalMessage.textContent = "Ganhou!";
+
+				var modal = new bootstrap.Modal(
+					document.getElementById("exampleModalToggle")
+					);
+				setTimeout(function() {
+					modal.show();
+				}, 500);
+
+				joga = false;
+			}
+		}
+	}
+}	
+	function reiniciarJogo() {
+		var imagens = document.getElementsByTagName("img");
+
+		for (var i = 0; i < imagens.length; i++) {
+			imagens[i].setAttribute("src", "invisivel.png");
+		}
+
+		vez = 1;
+		jogadas = 0;
+		joga = true;
+
+		document.getElementById("vezJogador").innerHTML = "Vez do jogador: Branco";
+	}
+</script>
+</html>
